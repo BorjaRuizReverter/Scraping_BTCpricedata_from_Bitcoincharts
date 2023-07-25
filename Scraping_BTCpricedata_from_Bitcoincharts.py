@@ -148,9 +148,10 @@ while start_date <= end_date:
     
     loop_number = loop_number + 1
 
-#driver.close()    
-df.to_csv(r'C:\Users\borja\Desktop\BTC\EXPERIMENTO\7. Analisis final BD Kaggle\Datos_nuevos.csv', index=False)
+driver.close()    
+
+df.to_csv(r'Scraped_data.csv', index=False)
 #Transformamos a coluna do tempo de Timestamp para TimeIndex
 df_timeindex = df
 df_timeindex['Timestamp']=pd.DatetimeIndex(df_timeindex.Timestamp).asi8//10 ** 9
-df_timeindex.to_csv(r'C:\Users\borja\Desktop\BTC\EXPERIMENTO\7. Analisis final BD Kaggle\Datos_nuevos_timeindex.csv', index=False)
+df_timeindex.to_csv(r'Scraped_data_in_timeindex.csv', index=False)
