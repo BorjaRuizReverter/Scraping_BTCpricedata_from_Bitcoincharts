@@ -14,6 +14,8 @@ from selenium.webdriver.common.action_chains import ActionChains
 from selenium.webdriver.common.proxy import Proxy, ProxyType
 from datetime import date, timedelta
 
+from selenium.webdriver.common.by import By
+
 urls = []
 df = pd.DataFrame([])
 
@@ -33,7 +35,7 @@ end_date = date(2019, 11, 25)
 #KRAKEN
 correitora = 'krakenUSD'
 start_date = date(2017, 7, 2)
-end_date = date(2019, 11, 30)
+end_date = date(2017, 7, 4)
 #end_date = date(2014, 1, 12)
 '''
 #MTGOX
@@ -66,7 +68,8 @@ def get_proxies():
 try: 
     proxies = get_proxies()#Usamos a função definida acima 
     #len(proxies)
-    PROXY = random.sample(proxies, 1)    
+    #PROXY = random.sample(proxies, 1)    #It seems deprecated from Python 3.9
+    PROXY = random.sample(list(proxies), 1)    
 except:
     #A função get_proxies não funciona as vezes. Nesse caso, entrar no site https://free-proxy-list.net/ e pegar um PROXY fixo 
     PROXY = '175.100.30.156:25'
@@ -80,9 +83,9 @@ capabilities = webdriver.DesiredCapabilities.CHROME['proxy']={
     "autodetect":False,
     'verify_ssl': False
 }
-driver = webdriver.Chrome(desired_capabilities=capabilities)
+#driver = webdriver.Chrome(desired_capabilities=capabilities)
 #driver = webdriver.Chrome()
-#driver = webdriver.Firefox()
+driver = webdriver.Firefox()
 
 loop_number = 0
 while start_date <= end_date:    
@@ -102,7 +105,8 @@ while start_date <= end_date:
     driver.refresh()    
     
     try:
-        element = driver.find_element_by_link_text('Load raw data')
+        #element = driver.find_element_by_link_text('Load raw data') It was deprecated
+        element = driver.find_element(By.LINK_TEXT, 'Load raw data')
         driver.execute_script("arguments[0].click();", element)
     except:  
         print("ERROR DE ELEMENT")
@@ -117,7 +121,8 @@ while start_date <= end_date:
             #num_aleatorio = random.sample(range(1,10),1)
             #time.sleep(3+num_aleatorio[0])
             driver.refresh()
-            element = driver.find_element_by_link_text('Load raw data')
+            #element = driver.find_element_by_link_text('Load raw data') It was deprecated
+            element = driver.find_element(By.LINK_TEXT, 'Load raw data')
             driver.execute_script("arguments[0].click();", element)
     
     ActionChains(driver).click().perform()
@@ -137,7 +142,9 @@ while start_date <= end_date:
         print(tabela.Timestamp[1])
     except:
         print("Lacuna de dados")
-    df = df.append(tabela, ignore_index=True)
+    
+    #df = df.append(tabela, ignore_index=True) #append will be deprecated, so we substituted for concat below
+    df = pd.concat([df, tabela], ignore_index=True)
     
     loop_number = loop_number + 1
 
