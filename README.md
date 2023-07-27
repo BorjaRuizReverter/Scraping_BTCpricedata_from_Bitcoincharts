@@ -1,9 +1,9 @@
-# Scraping_BTCpricedata_from_Bitcoincharts
+# Scraping BTCpricedata from Bitcoincharts
 This repository scrapes Bitcoin price data from the openwebsite Bitcoincharts.com
 
 The purpose is to collect, clean and prepare Bitcoin price action data for further analysis.
 
-## Pre-Installation
+## Installation
 Make sure you are using the latest version of Python. Otherwise, download if from [here](https://www.python.org/downloads/)
 
 Selenium and bs4 packages are both required for webScraping. So, installed them by typing in the terminal:
@@ -15,18 +15,20 @@ Also, the RegEx Module is needed in order to work with Regular Expressions.
 ```shell
 pip install regex
 ```
+
 Finally, install pandas for parsing the data:
 ```shell
 pip install pandas
 ```
 You will also need a webdriver in order to the script manipulate the browser automaticly. Firefox, Internet Explorer, Safari, Opera, Chrome and Edge provide their own webdriver. However, the most reliable one is the GeckoDriver from Firefox. You will need both the browser and the webdriver, so download Firefox from [here](https://www.mozilla.org/en-US/firefox/new/) and the Geckodriver from [here](https://github.com/mozilla/geckodriver/releases), depending on your OS.
 
+## Execution
 Once you have all installed, you can clone this repository by open a terminal and typing:
 ```shell
 git clone https://github.com/BorjaRuizReverter/Scraping_BTCpricedata_from_Bitcoincharts.git
 ```
 
-Then move to repository folder cloned:
+Then move to the repository folder cloned:
 
 ```shell
 cd Scraping_BTCpricedata_from_Bitcoincharts
@@ -34,10 +36,11 @@ cd Scraping_BTCpricedata_from_Bitcoincharts
 
 and execute the python script
 ```shell
-./SigaaWebScraping.py
+python3 ScrapingBTCpricedata.py
 ```
-or
+if you are in Linux, or
 
 ```shell
-python Scraping_BTCpricedata_from_Bitcoincharts.py
+python ScrapingBTCpricedata.py
 ```
+under Windows.
