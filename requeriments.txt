@@ -6,3 +6,8 @@ bs4
 selenium
 regex
 pandas
+random
+requests
+lxml
+datetime
+urllib
