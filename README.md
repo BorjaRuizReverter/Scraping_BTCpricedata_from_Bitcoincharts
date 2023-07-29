@@ -6,20 +6,11 @@ The purpose is to collect, clean and prepare Bitcoin price action data for furth
 ## Installation
 Make sure you are using the latest version of Python. Otherwise, download if from [here](https://www.python.org/downloads/)
 
-Selenium and bs4 packages are both required for webScraping. So, installed them by typing in the terminal:
+After that install all the required packages:
 ```shell
-pip install bs4 selenium
+pip install -r requirements.txt
 ```
 
-Also, the RegEx Module is needed in order to work with Regular Expressions.
-```shell
-pip install regex
-```
-
-Finally, install pandas for parsing the data:
-```shell
-pip install pandas
-```
 You will also need a webdriver in order to the script manipulate the browser automaticly. Firefox, Internet Explorer, Safari, Opera, Chrome and Edge provide their own webdriver. However, the most reliable one is the GeckoDriver from Firefox. You will need both the browser and the webdriver, so download Firefox from [here](https://www.mozilla.org/en-US/firefox/new/) and the Geckodriver from [here](https://github.com/mozilla/geckodriver/releases), depending on your OS.
 
 ## Execution
