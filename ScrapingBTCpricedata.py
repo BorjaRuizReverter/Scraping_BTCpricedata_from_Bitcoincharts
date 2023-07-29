@@ -14,27 +14,27 @@ from selenium.webdriver.common.by import By
 urls = []
 df = pd.DataFrame([])
 
-#Os dados baixados do site se correspondem com um dia antes do start_date
+#Data scraped is from one day before start_date
 '''
 #BITFINEX
-correitora = 'bitfinexUSD'
+exchange = 'bitfinexUSD'
 start_date = date(2019, 9, 3)
 end_date = date(2019, 9, 10)
 '''
 '''
 #BITSTAMP
-correitora = 'bitstampUSD'
+exchange = 'bitstampUSD'
 start_date = date(2019, 6, 3)
 end_date = date(2019, 11, 25)
 '''
 #KRAKEN
-correitora = 'krakenUSD'
+exchange = 'krakenUSD'
 start_date = date(2017, 7, 2)
 end_date = date(2017, 7, 4)
 #end_date = date(2014, 1, 12)
 '''
 #MTGOX
-correitora = 'mtgoxUSD'
+exchange = 'mtgoxUSD'
 start_date = date(2011, 6, 28)
 end_date = date(2014, 2, 24)
 '''
@@ -61,12 +61,12 @@ def get_proxies():
     return proxies
 
 try: 
-    proxies = get_proxies()#Usamos a função definida acima
+    proxies = get_proxies()
     #len(proxies)
-    #PROXY = random.sample(proxies, 1)#It seems deprecated from Python 3.9
+    #PROXY = random.sample(proxies, 1) #It seems deprecated from Python 3.9
     PROXY = random.sample(list(proxies), 1)
 except:
-    #A função get_proxies não funciona as vezes. Nesse caso, entrar no site https://free-proxy-list.net/ e pegar um PROXY fixo 
+    #Sometimes get_proxies doesnt work. In that case, access https://free-proxy-list.net/ and take a fixed PROXY
     PROXY = '175.100.30.156:25'
 
 capabilities = webdriver.DesiredCapabilities.CHROME['proxy']={
@@ -86,13 +86,13 @@ loop_number = 0
 while start_date <= end_date:
     #print (start_date.strftime("%Y-%m-%d"))
     start_date.strftime("%Y-%m-%d")
-    ano_str = start_date.strftime("%Y-%m-%d")[0:4]
-    mes_str = start_date.strftime("%Y-%m-%d")[5:7]
-    dia_str = start_date.strftime("%Y-%m-%d")[8:10]
+    year_str = start_date.strftime("%Y-%m-%d")[0:4]
+    month_str = start_date.strftime("%Y-%m-%d")[5:7]
+    day_str = start_date.strftime("%Y-%m-%d")[8:10]
 
     start_date += delta
-    urls.append('https://bitcoincharts.com/charts/'+correitora+'#rg1zig1-minzczsg'+ano_str+'-'
-                +mes_str+'-'+dia_str+'zeg'+ano_str+'-'+mes_str+'-'+dia_str+'ztgSzm1g10zm2g25zv')
+    urls.append('https://bitcoincharts.com/charts/'+exchange+'#rg1zig1-minzczsg'+year_str+'-'
+                +month_str+'-'+day_str+'zeg'+year_str+'-'+month_str+'-'+day_str+'ztgSzm1g10zm2g25zv')
 
     # Access the webpage
     #chrome.get(urls[loop_number])
@@ -104,7 +104,7 @@ while start_date <= end_date:
         element = driver.find_element(By.LINK_TEXT, 'Load raw data')
         driver.execute_script("arguments[0].click();", element)
     except:  
-        print("ERROR DE ELEMENT")
+        print("Error in Element")
         while internet()==False:
         #Wait for the internet to come back
             for j in range(10,0,-1):
@@ -113,8 +113,8 @@ while start_date <= end_date:
                 print('Internet is down. Retrying in', j, 'seconds')
             print('Retrying connection...')
             #import time
-            #num_aleatorio = random.sample(range(1,10),1)
-            #time.sleep(3+num_aleatorio[0])
+            #random_number = random.sample(range(1,10),1)
+            #time.sleep(3+random_number[0])
             driver.refresh()
             #element = driver.find_element_by_link_text('Load raw data') #It was deprecated
             element = driver.find_element(By.LINK_TEXT, 'Load raw data')
@@ -122,32 +122,32 @@ while start_date <= end_date:
     
     ActionChains(driver).click().perform()
     
-    #Após clicar no botão o site demora em carregar. Por isso vamos pausar o script uns segundos.
+    #After clicking the button the site lasts a bit to load. That is why we pause the script for seconds.
     import time
-    num_aleatorio = random.sample(range(1,10),1)
-    time.sleep(4+num_aleatorio[0])
+    random_number = random.sample(range(1,10),1)
+    time.sleep(4+random_number[0])
 
     soup = BeautifulSoup(driver.page_source, 'html.parser')
     table = soup.find(name='table', attrs={'id':'chart_table'})
-    tabela = pd.read_html(str(table))[0]
-    #tabela = tabela.drop(1440) #Tiramos a última fila porque se repete com a primeira do dia seguinte
-    tabela = tabela.drop(0) #Tiramos a última fila porque se repete com a última do dia anterior
-    tabela = tabela.replace('—', 'NaN')
+    table2 = pd.read_html(str(table))[0]
+    #table2 = table2.drop(1440) #We remove the last row because it repeats with the first one of the day after
+    table2 = table2.drop(0) #We remove the last row because it repeats with the last one of the day after
+    table2 = table2.replace('—', 'NaN')
 
     try:
-        print(tabela.Timestamp[1])
+        print(table2.Timestamp[1])
     except:
-        print("Lacuna de dados")
+        print("Data gap")
 
-    #df = df.append(tabela, ignore_index=True) #append will be deprecated, so we substituted for concat below
-    df = pd.concat([df, tabela], ignore_index=True)
+    #df = df.append(table2, ignore_index=True) #append will be deprecated, so we substituted for concat below
+    df = pd.concat([df, table2], ignore_index=True)
 
     loop_number = loop_number + 1
 
 driver.close()
 
 df.to_csv(r'Scraped_data.csv', index=False)
-#Transformamos a coluna do tempo de Timestamp para TimeIndex
+#We transform the column time from Timestamp to TimeIndex
 df_timeindex = df
 df_timeindex['Timestamp']=pd.DatetimeIndex(df_timeindex.Timestamp).asi8//10 ** 9
 df_timeindex.to_csv(r'Scraped_data_in_timeindex.csv', index=False)
