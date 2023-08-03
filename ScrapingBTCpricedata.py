@@ -7,37 +7,16 @@ from urllib.request import urlopen
 from selenium import webdriver
 from selenium.webdriver.support import expected_conditions as EC # available since 2.26.0
 from selenium.webdriver.common.action_chains import ActionChains
-from datetime import date, timedelta
+from datetime import timedelta
 
 from selenium.webdriver.common.by import By
 
+import config
+
+print("The exchange choosen was:", config.exchange)
+
 urls = []
 df = pd.DataFrame([])
-
-#Data scraped is from one day before start_date
-'''
-#BITFINEX
-exchange = 'bitfinexUSD'
-start_date = date(2019, 9, 3)
-end_date = date(2019, 9, 10)
-'''
-'''
-#BITSTAMP
-exchange = 'bitstampUSD'
-start_date = date(2019, 6, 3)
-end_date = date(2019, 11, 25)
-'''
-#KRAKEN
-exchange = 'krakenUSD'
-start_date = date(2017, 7, 2)
-end_date = date(2017, 7, 4)
-#end_date = date(2014, 1, 12)
-'''
-#MTGOX
-exchange = 'mtgoxUSD'
-start_date = date(2011, 6, 28)
-end_date = date(2014, 2, 24)
-'''
 
 delta = timedelta(days=1)
 
@@ -83,15 +62,15 @@ capabilities = webdriver.DesiredCapabilities.CHROME['proxy']={
 driver = webdriver.Firefox()
 
 loop_number = 0
-while start_date <= end_date:
-    #print (start_date.strftime("%Y-%m-%d"))
-    start_date.strftime("%Y-%m-%d")
-    year_str = start_date.strftime("%Y-%m-%d")[0:4]
-    month_str = start_date.strftime("%Y-%m-%d")[5:7]
-    day_str = start_date.strftime("%Y-%m-%d")[8:10]
+while config.start_date <= config.end_date:
+    #print (config.start_date.strftime("%Y-%m-%d"))
+    config.start_date.strftime("%Y-%m-%d")
+    year_str = config.start_date.strftime("%Y-%m-%d")[0:4]
+    month_str = config.start_date.strftime("%Y-%m-%d")[5:7]
+    day_str = config.start_date.strftime("%Y-%m-%d")[8:10]
 
-    start_date += delta
-    urls.append('https://bitcoincharts.com/charts/'+exchange+'#rg1zig1-minzczsg'+year_str+'-'
+    config.start_date += delta
+    urls.append('https://bitcoincharts.com/charts/'+config.exchange+'#rg1zig1-minzczsg'+year_str+'-'
                 +month_str+'-'+day_str+'zeg'+year_str+'-'+month_str+'-'+day_str+'ztgSzm1g10zm2g25zv')
 
     # Access the webpage
