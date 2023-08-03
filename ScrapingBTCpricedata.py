@@ -13,7 +13,7 @@ from selenium.webdriver.common.by import By
 
 import config
 
-print("The exchange choosen was:", config.exchange)
+print("The exchangeAndCurrency choosen was:", config.exchangeAndCurrency)
 
 urls = []
 df = pd.DataFrame([])
@@ -70,7 +70,7 @@ while config.start_date <= config.end_date:
     day_str = config.start_date.strftime("%Y-%m-%d")[8:10]
 
     config.start_date += delta
-    urls.append('https://bitcoincharts.com/charts/'+config.exchange+'#rg1zig1-minzczsg'+year_str+'-'
+    urls.append('https://bitcoincharts.com/charts/'+config.exchangeAndCurrency+'#rg1zig1-minzczsg'+year_str+'-'
                 +month_str+'-'+day_str+'zeg'+year_str+'-'+month_str+'-'+day_str+'ztgSzm1g10zm2g25zv')
 
     # Access the webpage

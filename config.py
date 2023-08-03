@@ -4,5 +4,10 @@ from datetime import date
 start_date = date(2017, 7, 2)
 end_date = date(2017, 7, 4)
 
-#Some of main exchanges are: bitfinexUSD, bitstampUSD, krakenUSD or mtgoxUSD
-exchange = 'krakenUSD'
+#Some of the exchanges are: bitfinex, bitstamp, kraken, mtgox, ...
+exchange = 'kraken'
+
+#Some of the currencies are: USD, EUR, CAD, BRL, ...
+currency = 'USD'
+
+exchangeAndCurrency = exchange + currency
