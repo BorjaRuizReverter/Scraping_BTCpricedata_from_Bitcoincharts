@@ -13,6 +13,13 @@ pip install -r requirements.txt
 
 You will also need a webdriver in order to the script manipulate the browser automaticly. Firefox, Internet Explorer, Safari, Opera, Chrome and Edge provide their own webdriver. However, the most reliable one is the GeckoDriver from Firefox. You will need both the browser and the webdriver, so download Firefox from [here](https://www.mozilla.org/en-US/firefox/new/) and the Geckodriver from [here](https://github.com/mozilla/geckodriver/releases), depending on your OS.
 
+## Configuration
+Before execution you will have to choose your configuration options in the config.py file. These are:
+1. Start date
+2. Final date
+3. Exchange
+4. Currency
+
 ## Execution
 Once you have all installed, you can clone this repository by open a terminal and typing:
 ```shell
