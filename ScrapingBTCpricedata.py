@@ -5,11 +5,9 @@ from bs4 import BeautifulSoup
 from lxml.html import fromstring
 from urllib.request import urlopen
 from selenium import webdriver
-from selenium.webdriver.support import expected_conditions as EC # available since 2.26.0
+from selenium.webdriver.common.by import By
 from selenium.webdriver.common.action_chains import ActionChains
 from datetime import timedelta
-
-from selenium.webdriver.common.by import By
 
 import config
 
@@ -57,9 +55,6 @@ capabilities = webdriver.DesiredCapabilities.CHROME['proxy']={
     "autodetect":False,
     'verify_ssl': False
 }
-#driver = webdriver.Chrome(desired_capabilities=capabilities)
-#driver = webdriver.Chrome()
-driver = webdriver.Firefox()
 
 loop_number = 0
 while config.start_date <= config.end_date:
@@ -75,13 +70,13 @@ while config.start_date <= config.end_date:
 
     # Access the webpage
     #chrome.get(urls[loop_number])
-    driver.get(urls[loop_number])
-    driver.refresh()
+    config.driver.get(urls[loop_number])
+    config.driver.refresh()
 
     try:
-        #element = driver.find_element_by_link_text('Load raw data') #It was deprecated
-        element = driver.find_element(By.LINK_TEXT, 'Load raw data')
-        driver.execute_script("arguments[0].click();", element)
+        #element = config.driver.find_element_by_link_text('Load raw data') #It was deprecated
+        element = config.driver.find_element(By.LINK_TEXT, 'Load raw data')
+        config.driver.execute_script("arguments[0].click();", element)
     except:  
         print("Error in Element")
         while internet()==False:
@@ -94,19 +89,19 @@ while config.start_date <= config.end_date:
             #import time
             #random_number = random.sample(range(1,10),1)
             #time.sleep(3+random_number[0])
-            driver.refresh()
-            #element = driver.find_element_by_link_text('Load raw data') #It was deprecated
-            element = driver.find_element(By.LINK_TEXT, 'Load raw data')
-            driver.execute_script("arguments[0].click();", element)
+            config.driver.refresh()
+            #element = config.driver.find_element_by_link_text('Load raw data') #It was deprecated
+            element = config.driver.find_element(By.LINK_TEXT, 'Load raw data')
+            config.driver.execute_script("arguments[0].click();", element)
     
-    ActionChains(driver).click().perform()
+    ActionChains(config.driver).click().perform()
     
     #After clicking the button the site lasts a bit to load. That is why we pause the script for seconds.
     import time
     random_number = random.sample(range(1,10),1)
     time.sleep(4+random_number[0])
 
-    soup = BeautifulSoup(driver.page_source, 'html.parser')
+    soup = BeautifulSoup(config.driver.page_source, 'html.parser')
     table = soup.find(name='table', attrs={'id':'chart_table'})
     table2 = pd.read_html(str(table))[0]
     #table2 = table2.drop(1440) #We remove the last row because it repeats with the first one of the day after
@@ -123,7 +118,7 @@ while config.start_date <= config.end_date:
 
     loop_number = loop_number + 1
 
-driver.close()
+config.driver.close()
 
 df.to_csv(r'Scraped_data.csv', index=False)
 #We transform the column time from Timestamp to TimeIndex

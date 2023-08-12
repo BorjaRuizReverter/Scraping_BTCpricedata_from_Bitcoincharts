@@ -11,3 +11,9 @@ exchange = 'kraken'
 currency = 'USD'
 
 exchangeAndCurrency = exchange + currency
+
+from selenium import webdriver
+#Choose de webdriver
+#driver = webdriver.Chrome()
+#driver = webdriver.Chrome(desired_capabilities=capabilities)
+driver = webdriver.Firefox()
